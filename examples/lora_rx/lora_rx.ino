@@ -13,9 +13,9 @@
 #include <SoftwareSerial.h>
 LORA lora;
 
-unsigned char rx_len;
-static char rx_buf[300];
-unsigned payloadsize=28;
+unsigned int rx_len;
+static char rx_buf[400];
+unsigned int payloadsize=30;
 void setup() {
   Serial.begin(115200);
   if(!lora.init())
@@ -32,18 +32,27 @@ void loop()
         if(lora.waitIrq(LR_RXDONE_MASK))    // wait for RXDONE interrupt
         {
             
-            rx_len=lora.rxPacket(rx_buf);  // read rx data
+            rx_len=lora.rxPacket((uint8_t*)rx_buf);  // read rx data
+            Serial.print(rx_len);
             if(rx_len<=payloadsize)
             {
             Serial.print("Receiving:");
-            Serial.println(rx_buf);    // print out by serial
+            //Serial.println(rx_buf);    // print out by serial
+            for (int i = 0; i < payloadsize; i++)
+            {
+              Serial.print(rx_buf[i]);
+              
+            }
+            Serial.println();
+            delay(2000);
+            Serial.flush(); 
             }
             lora.clrInterrupt();
             lora.rxInit();    // wait for packet from master
-            Serial.flush();
+            
             
         }
        
-     delay(2000);   
+        
     }
 }
