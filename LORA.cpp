@@ -104,7 +104,7 @@ bool LORA::config()
 	SPIWriteReg(LR_RegOpMode,LR_Mode_STBY|LORA_FREQUENCY_BAND); 
 	
 	// default payload length is 10 bytes in implicit mode
-	setPayloadLength(10);
+	setPayloadLength(28);
 
 }
 bool LORA::setFrequency(uint32_t freq)

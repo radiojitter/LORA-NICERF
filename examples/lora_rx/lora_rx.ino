@@ -6,7 +6,7 @@
 
 // This code runs in rx mode and  works with lora_tx.pde 
 // Flow:receive packet from tx->print to serial
-// data of packet is "swwxABCDEFGHIm"
+// data of packet is "ABCDEFGHIJKLMN"
 
 #include<LORA.h>
 #include <SPI.h>
@@ -14,8 +14,8 @@
 LORA lora;
 
 unsigned char rx_len;
-static char rx_buf[200];
-unsigned size_buf=15;
+static char rx_buf[300];
+unsigned payloadsize=28;
 void setup() {
   Serial.begin(115200);
   if(!lora.init())
@@ -33,12 +33,10 @@ void loop()
         {
             
             rx_len=lora.rxPacket(rx_buf);  // read rx data
-            if(rx_len<=size_buf)
+            if(rx_len<=payloadsize)
             {
             Serial.print("Receiving:");
             Serial.println(rx_buf);    // print out by serial
-            delay(2000);
-            
             }
             lora.clrInterrupt();
             lora.rxInit();    // wait for packet from master
@@ -46,6 +44,6 @@ void loop()
             
         }
        
-        
+     delay(2000);   
     }
 }
